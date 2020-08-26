@@ -1,0 +1,25 @@
+
+service: payroll-system
+plugins:
+  - "serverless-webpack"
+  - "serverless-offline"
+
+custom:
+  webpack:
+    webpackConfig: ./webpack.config.js
+  serverless-offline:
+    httpPort: 4000
+    useChildProcesses: true
+    location: ".webpack/service"
+
+provider:
+  name: aws
+  runtime: nodejs8.10
+
+functions:
+  uploadFile:
+    handler: handler.uploadFile
+    events:
+      - http:
+          path: api/uploadFile
+          method: post
