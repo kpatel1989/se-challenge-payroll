@@ -1,3 +1,5 @@
 export default {
-    uploadUrl : 'http://localhost:4000/dev/api/uploadFile'
+    domain: 'http://localhost:4000',
+    uploadUrl : '/dev/api/uploadFile',
+    getReport : '/dev/api/getReport'
 }

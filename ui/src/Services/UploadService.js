@@ -4,7 +4,7 @@ class UploadService {
     static uploadFileToServer(file) {
         const formData = new FormData();
         formData.append('file', file);
-        return fetch(config.uploadUrl, {
+        return fetch(`${config.domain}${config.uploadUrl}`, {
             method: 'POST',
             mode: 'cors',
             cache: 'no-cache',
