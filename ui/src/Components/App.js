@@ -10,7 +10,9 @@ function App() {
       <header className="App-header">
         Wave Payroll System
       </header>
+      <hr></hr>
       <UploadFile></UploadFile>
+      <hr></hr>
       <Report></Report>
     </div>
   );

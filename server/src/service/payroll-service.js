@@ -19,7 +19,7 @@ class PayrollService {
                     console.log(e.message);
                 }
             });
-            return payrollData;
+            return;
         } catch (error) {
             console.error(error);
             throw new Error(error);
@@ -30,11 +30,20 @@ class PayrollService {
             await client.authenticate();
             console.log('Connection has been established successfully.');
 
-            let payrollData = await Payroll.getDataForPayroll();
-            payrollData = JSON.stringify(payrollData);
-            console.log(payrollData);
-
-            return payrollData;
+            let payrollReport = await Payroll.getDataForPayroll();
+            payrollReport = {
+                employeeReports : payrollReport.map(data => {
+                    return {
+                        employeeId: data.employee_id,
+                        payPeriod: {
+                            startDate: data.start_date,
+                            endDate: data.end_date
+                        },
+                        amountPaid: data.amount_paid
+                    }
+                })
+            }
+            return {payrollReport};
         } catch (error) {
             console.error(error);
             throw new Error(error);

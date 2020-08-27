@@ -24,7 +24,7 @@ module.exports.getReport = async () => {
         const report = await new PayrollService().generateReport();
         return {
             statusCode: 200,
-            body: report
+            body: JSON.stringify(report)
         };
     } catch (error) {
         console.error(error);

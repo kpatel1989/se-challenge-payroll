@@ -14,10 +14,6 @@
     "lib"
   ],
   "license": "UNLICENSED",
-  "repository": {
-    "type": "git",
-    "url": "http://github.nw.adesa.com/new-wave/nw-localstack.git"
-  },
   "scripts": {
     "clean": "rimraf lib",
     "lint": "tslint --force --format verbose \"*.ts\"",

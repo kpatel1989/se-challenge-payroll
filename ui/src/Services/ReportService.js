@@ -7,7 +7,7 @@ class ReportService {
             mode: 'cors',
             cache: 'no-cache',
             credentials: 'same-origin'
-        });
+        }).then(response => response.json());
     }
 }
 export default ReportService;
