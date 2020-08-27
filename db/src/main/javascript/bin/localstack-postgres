@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+
+require('commander')
+    .command('up', 'Start local Postgres')
+    .command('down', 'Stop local Postgres')
+    .parse(process.argv);
+

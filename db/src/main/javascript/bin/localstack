@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+require('commander')
+    .command('dynamodb', 'DynamoDB commands')
+    .command('elasticsearch', 'ElasticSearch commands')
+    .command('iot', 'Local IoT commands, with simple mqtt-ws implementation')
+    .command('kinesis', 'Kinesis commands')
+    .command('postgres', 'Postgres commands')
+    .command('postgis', 'Postgis commands')
+    .command('redis', 'Redis commands')
+    .command('selenium', 'Selenium commands')
+    .command('watchlist-api', 'COMING SOON: Watchlist API commands')
+    .command('watchlist-comsumer', 'COMING SOON: Watchlist Consumer commands')
+    .parse(process.argv);
+

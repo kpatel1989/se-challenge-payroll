@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  postgres:
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=postgres
+
+  pgAdmin:
+    image: thajeztah/pgadmin4
+    ports:
+      - 5050:5050
+    links:
+      - postgres
+
