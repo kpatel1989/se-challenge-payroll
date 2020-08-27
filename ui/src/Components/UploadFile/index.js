@@ -17,6 +17,7 @@ class UploadFile extends React.Component {
     onFileUpload = async () => {
         if(!this.state.file) {
             alert('Please select a file');
+            return;
         }
         await UploadService.uploadFileToServer(this.state.file).then(res => {
             console.log(res);
