@@ -1,28 +1,14 @@
 'use strict';
 const multipart = require('aws-lambda-multipart-parser');
-const { DBService } = require('./src/service/db-init');
-const { Parse } = require('./src/service/csv-parser');
-const client = DBService.createDBClient();
-const Payroll = require('./src/model/payroll')(client);
-const Payscale = require('./src/model/payscale')(client);
+const PayrollService = require('./src/service/payroll-service');
 
-module.exports.uploadFile = async (event, context) => {
+module.exports.uploadFile = async (event) => {
     try {
-        await client.authenticate();
-        console.log('Connection has been established successfully.');
-
         let payrollData = new Buffer(multipart.parse(event, true).file.content).toString('utf-8');
-        payrollData = Parse(payrollData);
-        await payrollData.forEach(async dataItem => {
-            try {
-                await Payroll.upsert(dataItem);
-            } catch (e) {
-                console.log(e.message);
-            }
-        });
+        const result = await new PayrollService().saveData(payrollData);
         return {
             statusCode: 200,
-            body: JSON.stringify(payrollData),
+            body: JSON.stringify(result),
         };
     } catch (error) {
         console.error(error);
@@ -31,19 +17,14 @@ module.exports.uploadFile = async (event, context) => {
             body: JSON.stringify(error.message),
         };
     }
-
 };
 
 module.exports.getReport = async () => {
     try {
-        await client.authenticate();
-        console.log('Connection has been established successfully.');
-        let payrollData = await Payroll.findAll();
-        payrollData = JSON.stringify(payrollData);
-        console.log(payrollData);
+        const report = await new PayrollService().generateReport();
         return {
             statusCode: 200,
-            body: payrollData
+            body: report
         };
     } catch (error) {
         console.error(error);

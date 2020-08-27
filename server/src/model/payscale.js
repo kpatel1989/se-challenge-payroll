@@ -1,8 +1,6 @@
 module.exports = function (client) {
     const { DataTypes, Model } = require('sequelize');
 
-
-
     class Payscale extends Model { }
 
     Payscale.init({
