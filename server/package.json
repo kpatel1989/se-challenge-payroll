@@ -5,8 +5,7 @@
   "main": ".webpack/service/handler.js",
   "scripts": {
     "start": "serverless offline start",
-    "flyway": "flyway -configFile=./flyway.conf",
-    "flyway:migrate": "npm run flyway -- migrate",
+    "build": "./init.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
