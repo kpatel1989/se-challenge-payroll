@@ -1,27 +1,37 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
+const slsw = require('serverless-webpack');
 const nodeExternals = require('webpack-node-externals');
 
+const entries = {};
+
+Object.keys(slsw.lib.entries).forEach(
+    (key) => (entries[key] = ['./source-map-install.js', slsw.lib.entries[key]]),
+);
+
 module.exports = {
-    entry: './handler.js',
-    target: 'node',
-    externals: [nodeExternals()],
+    mode: slsw.lib.webpack.isLocal ? 'development' : 'production',
+    entry: entries,
+    devtool: 'source-map',
+    resolve: {
+        extensions: ['.js', '.jsx', '.json', '.ts', '.tsx'],
+        alias: {
+            '@src': path.resolve(__dirname, './src'),
+            '@queries': path.resolve(__dirname, './queries'),
+            '@tests': path.resolve(__dirname, './tests'),
+        },
+    },
     output: {
         libraryTarget: 'commonjs',
         path: path.join(__dirname, '.webpack'),
-        filename: 'handler.js'
+        filename: '[name].js',
     },
-    mode: 'development',
+    target: 'node',
+    externals: [nodeExternals()], // modules to be excluded from bundled file
     module: {
         rules: [
-            {
-                test: /\.js?$/,
-                enforce: 'pre',
-                loader: 'source-map-loader'
-            }
-        ]
+            // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
+            { test: /\.tsx?$/, loader: 'ts-loader' },
+        ],
     },
-    devtool: 'nosources-source-map',
-    node: {
-        __dirname: true
-    }
 };

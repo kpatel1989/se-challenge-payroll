@@ -1,40 +1,19 @@
+service:
+  name: payroll-system
 
-service: payroll-system
 plugins:
-  - "serverless-webpack"
-  - "serverless-offline"
-
-custom:
-  webpack:
-    webpackConfig: ./webpack.config.js
-    includeModules:
-      forceInclude:
-        - pg
-        - pg-hstore
-  serverless-offline:
-    httpPort: 4000
-    useChildProcesses: true
-    location: ".webpack/service"
+  - serverless-webpack
+  - serverless-offline
 
 provider:
   name: aws
   runtime: nodejs8.10
   environment:
-    DB_HOST: ${file(properties.yml):db_host}
-    DB_NAME: ${file(properties.yml):db_name}
-    DB_USER: ${file(properties.yml):db_user}
-    DB_PASSWORD: ${file(properties.yml):db_password}
-
+    PAYROLL_SCHEMA: 'db_payroll'
 functions:
-  uploadFile:
-    handler: handler.uploadFile
+  hello:
+    handler: src/main/handler.hello
     events:
       - http:
-          path: api/uploadFile
-          method: post
-  getReport:
-    handler: handler.getReport
-    events:
-      - http:
-          path: api/getReport
           method: get
+          path: hello

@@ -1,4 +1,0 @@
-db_host: localhost:5432
-db_name: db_payroll
-db_user: postgres
-db_password: postgres

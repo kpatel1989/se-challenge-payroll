@@ -1,0 +1,32 @@
+{
+  "compilerOptions": {
+    "experimentalDecorators": true,
+    "lib": ["es2017"],
+    "removeComments": true,
+    "moduleResolution": "node",
+    "noUnusedLocals": true,
+    "noUnusedParameters": false,
+    "sourceMap": true,
+    "target": "es2017",
+    "outDir": "lib",
+    "noImplicitAny": false,
+    "inlineSources": true,
+    "esModuleInterop": true,
+    "sourceRoot": "/src",
+    "baseUrl": "./",
+    "paths": {
+      "@src/*": ["src/*"],
+      "@queries/*": ["queries/*"],
+      "@tests/*": ["tests/*"]
+    }
+  },
+  "include": ["./src/**/*"],
+  "exclude": [
+    "node_modules",
+    "./test",
+    ".serverless/**/*",
+    ".webpack/**/*",
+    "_warmup/**/*",
+    ".vscode/**/*"
+  ]
+}

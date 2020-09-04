@@ -1,11 +1,19 @@
-const { DBService } = require('../main/utils/db-init');
-const { Parse } = require('../main/utils/csv-parser');
-const client = DBService.createDBClient();
+import { DBService } from '../utils/db-init';
+import { Parse } from '../utils/csv-parser';
 
-const Payroll = require('../model/payroll')(client);
 
-class PayrollService {
+import { Sequelize } from 'sequelize-typescript';
+import { QueryTypes } from 'sequelize';
 
+import { Payroll } from '../model/payroll';
+
+const client:Sequelize = DBService.createDBClient();
+
+export class PayrollService {
+    sequelize: Sequelize;
+    constructor(client) {
+        this.sequelize = client;
+    }
     async saveData(payrollData) {
         try {
             await client.authenticate();
@@ -30,7 +38,8 @@ class PayrollService {
             await client.authenticate();
             console.log('Connection has been established successfully.');
 
-            let payrollReport = await Payroll.getDataForPayroll();
+
+            let payrollReport:any = await client.query(Payroll.getReportQuery(), { type: QueryTypes.SELECT });
             payrollReport = {
                 employeeReports : payrollReport.map(data => {
                     return {
@@ -50,5 +59,3 @@ class PayrollService {
         }
     }
 }
-
-module.exports = PayrollService;

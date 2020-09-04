@@ -1,8 +1,23 @@
-'use strict';
-const multipart = require('aws-lambda-multipart-parser');
-const PayrollService = require('./src/service/payroll-service');
 
-module.exports.uploadFile = async (event) => {
+const multipart = require('aws-lambda-multipart-parser');
+const PayrollService = require('./service/payroll-service');
+import {
+  APIGatewayEvent, Callback, Context, Handler,
+} from 'aws-lambda';
+
+export const hello: Handler = (event: APIGatewayEvent, _context: Context, cb: Callback) => {
+  const response = {
+    statusCode: 200,
+    body: JSON.stringify({
+      message: 'Go Serverless Webpack (Typescript) v1.0! Your function executed successfully!',
+      input: event,
+    }),
+  };
+
+  cb(null, response);
+};
+
+exports.uploadFile = async (event: APIGatewayEvent) => {
     try {
         let payrollData = new Buffer(multipart.parse(event, true).file.content).toString('utf-8');
         const result = await new PayrollService().saveData(payrollData);
@@ -19,7 +34,7 @@ module.exports.uploadFile = async (event) => {
     }
 };
 
-module.exports.getReport = async () => {
+exports.getReport = async () => {
     try {
         const report = await new PayrollService().generateReport();
         return {
