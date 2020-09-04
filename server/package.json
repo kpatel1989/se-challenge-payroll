@@ -4,6 +4,7 @@
   "description": "Serverless webpack example using Typescript",
   "main": "handler.js",
   "scripts": {
+    "start": "node ./node_modules/serverless/bin/serverless.js offline",
     "test": "NODE_ENV=test ./node_modules/.bin/jest --ci --verbose",
     "lint": "eslint ./src --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "eslint ./src --ext .js,.jsx,.ts,.tsx --fix",

@@ -11,6 +11,18 @@ provider:
   environment:
     PAYROLL_SCHEMA: 'db_payroll'
 functions:
+  uploadFile:
+    handler: handler.uploadFile
+    events:
+      - http:
+          path: api/uploadFile
+          method: post
+  getReport:
+    handler: handler.getReport
+    events:
+      - http:
+          path: api/getReport
+          method: get
   hello:
     handler: src/main/handler.hello
     events:
