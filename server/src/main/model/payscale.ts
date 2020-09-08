@@ -1,17 +1,23 @@
 import {
-  PrimaryKey, Column, Table, Model,
+  PrimaryKey, Column, Table, Model, DataType,
 } from 'sequelize-typescript';
 
 @Table({
   underscored: true,
-  schema: process.env.PAYROLL_SCHEMA,
-  tableName: 'payscale',
+  tableName: 'payscale'
 })
-export class Payscale extends Model {
-    @PrimaryKey
-    @Column({ field: 'job_group' })
-    jobGroup: number;
+export class Payscale extends Model<Payscale> {
 
-    @Column({ field: 'pay_rate' })
+    @PrimaryKey
+    @Column({
+      field: 'job_group',
+      type: DataType.STRING
+    })
+    jobGroup: string;
+
+    @Column({
+      field: 'pay_rate',
+      type: DataType.NUMERIC
+    })
     payRate: number;
 }

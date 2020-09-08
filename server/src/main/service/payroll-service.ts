@@ -1,4 +1,3 @@
-import { DBService } from '../utils/db-init';
 import { Parse } from '../utils/csv-parser';
 
 
@@ -7,8 +6,6 @@ import { QueryTypes } from 'sequelize';
 
 import { Payroll } from '../model/payroll';
 
-const client:Sequelize = DBService.createDBClient();
-
 export class PayrollService {
     sequelize: Sequelize;
     constructor(client) {
@@ -16,7 +13,6 @@ export class PayrollService {
     }
     async saveData(payrollData) {
         try {
-            await client.authenticate();
             console.log('Connection has been established successfully.');
 
             payrollData = Parse(payrollData);
@@ -35,11 +31,8 @@ export class PayrollService {
     }
     async generateReport() {
         try {
-            await client.authenticate();
-            console.log('Connection has been established successfully.');
-
-
-            let payrollReport:any = await client.query(Payroll.getReportQuery(), { type: QueryTypes.SELECT });
+            let payrollReport:any = {};
+            payrollReport = await this.sequelize.query(Payroll.getReportQuery(), { type: QueryTypes.SELECT });
             payrollReport = {
                 employeeReports : payrollReport.map(data => {
                     return {

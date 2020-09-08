@@ -16,7 +16,7 @@ class PayrollService {
                 try {
                     await Payroll.upsert(dataItem);
                 } catch (e) {
-                    console.log(e.message);
+                    console.log('Upsert error', e);
                 }
             });
             return;

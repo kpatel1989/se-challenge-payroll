@@ -1,9 +1,14 @@
 
-const multipart = require('aws-lambda-multipart-parser');
-const PayrollService = require('./service/payroll-service');
+import multipart from 'aws-lambda-multipart-parser';
 import {
-  APIGatewayEvent, Callback, Context, Handler,
+    APIGatewayEvent, Callback, Context, Handler,
 } from 'aws-lambda';
+import { Sequelize } from 'sequelize-typescript';
+
+import { DBService } from './utils/db-init';
+import { PayrollService } from './service/payroll-service';
+
+const client:Sequelize = DBService.createDBClient();
 
 export const hello: Handler = (event: APIGatewayEvent, _context: Context, cb: Callback) => {
   const response = {
@@ -20,7 +25,7 @@ export const hello: Handler = (event: APIGatewayEvent, _context: Context, cb: Ca
 exports.uploadFile = async (event: APIGatewayEvent) => {
     try {
         let payrollData = new Buffer(multipart.parse(event, true).file.content).toString('utf-8');
-        const result = await new PayrollService().saveData(payrollData);
+        const result = await new PayrollService(client).saveData(payrollData);
         return {
             statusCode: 200,
             body: JSON.stringify(result),
@@ -36,7 +41,7 @@ exports.uploadFile = async (event: APIGatewayEvent) => {
 
 exports.getReport = async () => {
     try {
-        const report = await new PayrollService().generateReport();
+        const report = await new PayrollService(client).generateReport();
         return {
             statusCode: 200,
             body: JSON.stringify(report)

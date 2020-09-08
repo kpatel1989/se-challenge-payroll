@@ -9,16 +9,20 @@ provider:
   name: aws
   runtime: nodejs8.10
   environment:
-    PAYROLL_SCHEMA: 'db_payroll'
+    DB_HOST: ${file(properties.yml):db_host}
+    DB_NAME: ${file(properties.yml):db_name}
+    DB_USER: ${file(properties.yml):db_user}
+    DB_PASSWORD: ${file(properties.yml):db_password}
+
 functions:
   uploadFile:
-    handler: handler.uploadFile
+    handler: src/main/handler.uploadFile
     events:
       - http:
           path: api/uploadFile
           method: post
   getReport:
-    handler: handler.getReport
+    handler: src/main/handler.getReport
     events:
       - http:
           path: api/getReport

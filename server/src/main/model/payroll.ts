@@ -1,25 +1,24 @@
 import {
-  PrimaryKey, Column, Table, DataType, ForeignKey, HasMany, Model,
+  PrimaryKey, Column, Table, DataType, ForeignKey, Model,
 } from 'sequelize-typescript';
 import { Payscale } from './payscale';
 
 @Table({
   underscored: true,
-  schema: process.env.PAYROLL_SCHEMA,
-  tableName: 'payroll',
+  tableName: 'payroll'
 })
-export class Payroll extends Model {
-    @HasMany(() => Payscale)
-    payscale: Payscale[];
-
+export class Payroll extends Model<Payroll> {
     @PrimaryKey
-    @Column({ field: 'employee_id' })
-    employeeId: number;
+    @Column({
+        field: 'employee_id',
+        type: DataType.STRING
+    })
+    employeeId: string;
 
     @PrimaryKey
     @Column({
       field: 'date',
-      type: DataType.DATEONLY,
+      type: DataType.DATE,
       set(value: string) {
         const dateAttributes = value.split('/');
         this.setDataValue('date', `${dateAttributes[2]}-${dateAttributes[1]}-${dateAttributes[0]}`);
@@ -31,11 +30,17 @@ export class Payroll extends Model {
     date: number;
 
     @PrimaryKey
-    @Column({ field: 'job_group' })
+    @Column({
+        field: 'job_group',
+        type: DataType.STRING
+    })
     @ForeignKey(() => Payscale)
     jobGroup: string;
 
-    @Column({ field: 'hours_worked' })
+    @Column({
+        field: 'hours_worked',
+        type: DataType.NUMERIC
+    })
     hoursWorked: number;
 
 
