@@ -1,5 +1,4 @@
 import * as sinon  from 'sinon';
-// var SequelizeMock = require('sequelize-mock');
 
 import { DBService } from '../../src/main/utils/db-init';
 import { PayrollService } from '../../src/main/service/payroll-service';
@@ -10,20 +9,34 @@ describe('Payroll Service', () => {
 
     let service;
     let dbClient;
+    let payrollUpsertStub;
 
     beforeEach(() => {
         dbClient = DBService.createDBClient();
         service = new PayrollService(dbClient);
     });
+    afterEach(() => {
+        if (payrollUpsertStub) payrollUpsertStub.restore();
+    })
 
     it('should save the data to the database', async () => {
-        const upsertStub = sinon.stub(Payroll, 'upsert').returns(true);
-        service.saveData(data.PAYROLL_SERVICE_UPLOAD_TEST_DATA);
-        expect(upsertStub.callCount).toBe(10);
+        payrollUpsertStub = sinon.stub(Payroll, 'upsert').returns(true);
+        const result = await service.saveData(data.PAYROLL_SERVICE_UPLOAD_TEST_DATA);
+        expect(payrollUpsertStub.callCount).toBe(10);
+        expect(result).toEqual('Success');
+    });
+
+    it('should fail if the upsert fails', async () => {
+        payrollUpsertStub = sinon.stub(Payroll, 'upsert').callsFake(() => {
+            return Promise.reject('Something wrong while upserting data to database');
+        });
+        const result = await service.saveData(data.PAYROLL_SERVICE_UPLOAD_TEST_DATA);
+        expect(payrollUpsertStub.callCount).toBe(10);
+        expect(result).toEqual('Success');
     });
 
     it('should return the payroll report.', async () => {
-        sinon.stub(dbClient, 'query').resolves(data.PAYROLL_SERVICE_REPORT_QUERY_DATA);
+        const queryStub = sinon.stub(dbClient, 'query').resolves(data.PAYROLL_SERVICE_REPORT_QUERY_DATA);
         const report = await service.generateReport();
         const expectedOutput = {
             "payrollReport": {
@@ -31,5 +44,6 @@ describe('Payroll Service', () => {
             }
         }
         expect(report).toEqual(expectedOutput);
+        queryStub.restore();
     });
 });

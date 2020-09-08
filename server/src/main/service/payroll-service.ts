@@ -1,9 +1,6 @@
-import { Parse } from '../utils/csv-parser';
-
-
-// import { Sequelize as SequelizeT } from 'sequelize-typescript';
 import { QueryTypes } from 'sequelize';
 import { Sequelize } from 'sequelize';
+import { Parse } from '../utils/csv-parser';
 import { Payroll } from '../model/payroll';
 
 export class PayrollService {
@@ -18,16 +15,18 @@ export class PayrollService {
                 // TODO : Handle individual error.
                 await Payroll.upsert(dataItem);
             });
-            return;
+            return 'Success';
         } catch (error) {
             console.error(error);
-            throw new Error(error);
+            return Promise.reject(error);
         }
     }
     async generateReport() {
         try {
             let payrollReport:any = {};
-            payrollReport = await this.sequelize.query(Payroll.getReportQuery(), { type: QueryTypes.SELECT });
+            payrollReport = await this.sequelize.query(Payroll.getReportQuery(), { type: QueryTypes.SELECT }).catch(err => {
+                throw new Error(err);
+            });
             payrollReport = {
                 employeeReports : payrollReport.map(data => {
                     return {
@@ -43,7 +42,7 @@ export class PayrollService {
             return {payrollReport};
         } catch (error) {
             console.error(error);
-            throw new Error(error);
+            return Promise.reject(error);
         }
     }
 }
