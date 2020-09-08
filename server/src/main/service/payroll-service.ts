@@ -13,15 +13,10 @@ export class PayrollService {
     }
     async saveData(payrollData) {
         try {
-            console.log('Connection has been established successfully.');
-
             payrollData = Parse(payrollData);
             await payrollData.forEach(async dataItem => {
-                try {
-                    await Payroll.upsert(dataItem);
-                } catch (e) {
-                    console.log(e.message);
-                }
+                // TODO : Handle individual error.
+                await Payroll.upsert(dataItem);
             });
             return;
         } catch (error) {

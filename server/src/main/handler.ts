@@ -1,26 +1,12 @@
 
 import multipart from 'aws-lambda-multipart-parser';
-import {
-    APIGatewayEvent, Callback, Context, Handler,
-} from 'aws-lambda';
+import { APIGatewayEvent } from 'aws-lambda';
 import { Sequelize } from 'sequelize-typescript';
 
 import { DBService } from './utils/db-init';
 import { PayrollService } from './service/payroll-service';
 
-const client:Sequelize = DBService.createDBClient();
-
-export const hello: Handler = (event: APIGatewayEvent, _context: Context, cb: Callback) => {
-  const response = {
-    statusCode: 200,
-    body: JSON.stringify({
-      message: 'Go Serverless Webpack (Typescript) v1.0! Your function executed successfully!',
-      input: event,
-    }),
-  };
-
-  cb(null, response);
-};
+const client: Sequelize = DBService.createDBClient();
 
 exports.uploadFile = async (event: APIGatewayEvent) => {
     try {
