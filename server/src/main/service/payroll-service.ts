@@ -1,9 +1,9 @@
 import { Parse } from '../utils/csv-parser';
 
 
-import { Sequelize } from 'sequelize-typescript';
+// import { Sequelize as SequelizeT } from 'sequelize-typescript';
 import { QueryTypes } from 'sequelize';
-
+import { Sequelize } from 'sequelize';
 import { Payroll } from '../model/payroll';
 
 export class PayrollService {

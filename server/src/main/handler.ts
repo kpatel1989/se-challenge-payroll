@@ -1,4 +1,7 @@
 
+import 'reflect-metadata';
+import 'sequelize';
+import 'pg';
 import multipart from 'aws-lambda-multipart-parser';
 import { APIGatewayEvent } from 'aws-lambda';
 import { Sequelize } from 'sequelize-typescript';
