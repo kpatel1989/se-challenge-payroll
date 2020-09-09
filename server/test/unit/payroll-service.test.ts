@@ -26,15 +26,6 @@ describe('Payroll Service', () => {
         expect(result).toEqual('Success');
     });
 
-    it('should fail if the upsert fails', async () => {
-        payrollUpsertStub = sinon.stub(Payroll, 'upsert').callsFake(() => {
-            return Promise.reject('Something wrong while upserting data to database');
-        });
-        const result = await service.saveData(data.PAYROLL_SERVICE_UPLOAD_TEST_DATA);
-        expect(payrollUpsertStub.callCount).toBe(10);
-        expect(result).toEqual('Success');
-    });
-
     it('should return the payroll report.', async () => {
         const queryStub = sinon.stub(dbClient, 'query').resolves(data.PAYROLL_SERVICE_REPORT_QUERY_DATA);
         const report = await service.generateReport();
