@@ -13,6 +13,7 @@ const client: Sequelize = DBService.createDBClient();
 
 exports.uploadFile = async (event: APIGatewayEvent) => {
     try {
+        throw new Error("Something happen");
         let payrollData = new Buffer(multipart.parse(event, true).file.content).toString('utf-8');
         const result = await new PayrollService(client).saveData(payrollData);
         return {
@@ -23,13 +24,14 @@ exports.uploadFile = async (event: APIGatewayEvent) => {
         console.error(error);
         return {
             statusCode: 500,
-            body: JSON.stringify(error.message),
+            body: JSON.stringify({error: error.message})
         };
     }
 };
 
 exports.getReport = async () => {
     try {
+        throw new Error("Something happen");
         const report = await new PayrollService(client).generateReport();
         return {
             statusCode: 200,
@@ -39,7 +41,7 @@ exports.getReport = async () => {
         console.error(error);
         return {
             statusCode: 500,
-            body: JSON.stringify(error.message),
+            body: JSON.stringify({error: error.message})
         };
     }
 }

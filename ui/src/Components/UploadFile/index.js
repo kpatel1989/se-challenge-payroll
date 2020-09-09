@@ -11,11 +11,11 @@ class UploadFile extends React.Component {
     }
     handleChange = (event) => {
         this.setState({
-            file : event.target.files[0]
+            file: event.target.files[0]
         });
     }
     onFileUpload = async () => {
-        if(!this.state.file) {
+        if (!this.state.file) {
             alert('Please select a file');
             return;
         }
@@ -27,10 +27,16 @@ class UploadFile extends React.Component {
     }
     render() {
         return (
-            <div className="upload-component">
-                <label>Choose a .csv file: </label>
-                <input type='file' onChange={this.handleChange}/>
-                <button type='submit' onClick={this.onFileUpload}> Upload File </button>
+            <div class='container'>
+                <div class="input-group mb-3">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" id="chooseFileBtn" onChange={this.handleChange} required/>
+                            <label class="custom-file-label" for="chooseFileBtn">Choose file</label>
+                    </div>
+                    <div class="input-group-append">
+                        <span class="input-group-text" id="inputGroupFileAddon02" onClick={this.onFileUpload}>Upload</span>
+                    </div>
+                </div>
             </div>
         );
     }

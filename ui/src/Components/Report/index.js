@@ -10,17 +10,23 @@ class Report extends React.Component {
     }
     getReport = async () => {
         const data = await ReportService.getReport();
-        this.setState({
-            report: data
-        });
+        if (data.payrollReport) {
+            this.setState({
+                report: data
+            });
+        } else if (data.error) {
+            alert(data.error);
+        } else {
+            alert(JSON.stringify(data));
+        }
     }
     render() {
         let reportData = '';
         if (this.state.report && this.state.report.payrollReport && this.state.report.payrollReport.employeeReports) {
             reportData = (
-                <div>
+                <div class='container'>
                     <h1>Salary Report</h1>
-                    <table>
+                    <table class='table'>
                         <tr>
                             <th>Employee Id</th>
                             <th>Start Date</th>
@@ -42,7 +48,7 @@ class Report extends React.Component {
         }
         return (
             <div>
-                <button onClick={this.getReport}>Get Report</button>
+                <button type="button" class="btn btn-primary" onClick={this.getReport}>Get Report</button>
                 {reportData}
             </div>
         );
